@@ -5,10 +5,10 @@
  * for all PayPal REST API endpoints.
  */
 
-import type { ToolResult } from 'cortex/plugins';
+import type { ToolResult } from "cortex/plugins";
 
 /** PayPal API environment */
-export type PayPalEnvironment = 'sandbox' | 'live';
+export type PayPalEnvironment = "sandbox" | "live";
 
 /** Plugin configuration for PayPal */
 export interface PayPalConfig {
@@ -29,7 +29,7 @@ interface TokenResponse {
 export class PayPalAuthError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'PayPalAuthError';
+    this.name = "PayPalAuthError";
   }
 }
 
@@ -39,15 +39,15 @@ export class PayPalAuthError extends Error {
 export function getPayPalConfig(config: Record<string, unknown>): PayPalConfig {
   const clientId = config.paypalClientId as string;
   const clientSecret = config.paypalClientSecret as string;
-  const environment = (config.paypalEnvironment as string) || 'sandbox';
+  const environment = (config.paypalEnvironment as string) || "sandbox";
 
   if (!clientId || !clientSecret) {
     throw new PayPalAuthError(
-      'PayPal not configured. Set paypalClientId and paypalClientSecret in plugin config.',
+      "PayPal not configured. Set paypalClientId and paypalClientSecret in plugin config.",
     );
   }
 
-  if (environment !== 'sandbox' && environment !== 'live') {
+  if (environment !== "sandbox" && environment !== "live") {
     throw new PayPalAuthError(
       `Invalid environment '${environment}'. Must be 'sandbox' or 'live'.`,
     );
@@ -60,7 +60,9 @@ export function getPayPalConfig(config: Record<string, unknown>): PayPalConfig {
  * Get the base URL for the PayPal REST API depending on environment.
  */
 export function getApiBase(env: PayPalEnvironment): string {
-  return env === 'sandbox' ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com';
+  return env === "sandbox"
+    ? "https://api-m.sandbox.paypal.com"
+    : "https://api-m.paypal.com";
 }
 
 /**
@@ -69,7 +71,7 @@ export function getApiBase(env: PayPalEnvironment): string {
 export async function getAccessToken(config: PayPalConfig): Promise<string> {
   const base = getApiBase(config.environment);
   const body = new URLSearchParams({
-    grant_type: 'client_credentials',
+    grant_type: "client_credentials",
   });
 
   const credentials = btoa(`${config.clientId}:${config.clientSecret}`);
@@ -79,11 +81,11 @@ export async function getAccessToken(config: PayPalConfig): Promise<string> {
 
   try {
     const response = await fetch(`${base}/v1/oauth2/token`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Basic ${credentials}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json',
+        "Authorization": `Basic ${credentials}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
       },
       body: body.toString(),
       signal: controller.signal,
@@ -93,14 +95,16 @@ export async function getAccessToken(config: PayPalConfig): Promise<string> {
 
     if (!response.ok) {
       const errorBody = await response.text();
-      let detail = '';
+      let detail = "";
       try {
         const parsed = JSON.parse(errorBody);
         detail = parsed.error_description || parsed.error || errorBody;
       } catch {
         detail = errorBody;
       }
-      throw new PayPalAuthError(`PayPal auth failed (${response.status}): ${detail}`);
+      throw new PayPalAuthError(
+        `PayPal auth failed (${response.status}): ${detail}`,
+      );
     }
 
     const data = await response.json() as TokenResponse;
@@ -108,11 +112,13 @@ export async function getAccessToken(config: PayPalConfig): Promise<string> {
   } catch (err) {
     clearTimeout(timeoutId);
     if (err instanceof PayPalAuthError) throw err;
-    if (err instanceof Error && err.name === 'AbortError') {
-      throw new PayPalAuthError('PayPal auth request timed out (10 seconds)');
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new PayPalAuthError("PayPal auth request timed out (10 seconds)");
     }
     throw new PayPalAuthError(
-      `Failed to obtain PayPal token: ${err instanceof Error ? err.message : String(err)}`,
+      `Failed to obtain PayPal token: ${
+        err instanceof Error ? err.message : String(err)
+      }`,
     );
   }
 }
@@ -130,9 +136,9 @@ export async function paypalFetch(
   const url = `${base}${path}`;
 
   const headers = new Headers(options.headers || {});
-  headers.set('Authorization', `Bearer ${token}`);
-  headers.set('Content-Type', 'application/json');
-  headers.set('Accept', 'application/json');
+  headers.set("Authorization", `Bearer ${token}`);
+  headers.set("Content-Type", "application/json");
+  headers.set("Accept", "application/json");
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30_000);
@@ -147,8 +153,8 @@ export async function paypalFetch(
     return response;
   } catch (err) {
     clearTimeout(timeoutId);
-    if (err instanceof Error && err.name === 'AbortError') {
-      throw new PayPalAuthError('PayPal API request timed out (30 seconds)');
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new PayPalAuthError("PayPal API request timed out (30 seconds)");
     }
     throw err;
   }
@@ -183,11 +189,12 @@ export async function handleResponse(
     };
   }
 
-  let errorBody = '';
+  let errorBody = "";
   try {
     errorBody = await response.text();
     const parsed = JSON.parse(errorBody);
-    errorBody = parsed.message || parsed.error_description || parsed.error?.message || errorBody;
+    errorBody = parsed.message || parsed.error_description ||
+      parsed.error?.message || errorBody;
   } catch {
     // use raw text
   }
@@ -195,8 +202,10 @@ export async function handleResponse(
   return {
     toolName,
     success: false,
-    output: '',
-    error: `PayPal API error (${response.status}): ${errorBody || response.statusText}`,
+    output: "",
+    error: `PayPal API error (${response.status}): ${
+      errorBody || response.statusText
+    }`,
     durationMs,
   };
 }

@@ -1,7 +1,7 @@
 # CortexPrism PayPal Plugin
 
-Integrate PayPal payments, invoicing, payouts, products, and subscriptions into your Cortex agents
-via the PayPal REST API.
+Integrate PayPal payments, invoicing, payouts, products, and subscriptions into
+your Cortex agents via the PayPal REST API.
 
 ## Features
 
@@ -30,8 +30,10 @@ cortex plugin install ./manifest.json
 
 ## Prerequisites
 
-1. **PayPal Developer Account** at [developer.paypal.com](https://developer.paypal.com)
-2. Create a **REST API App** in the [Dashboard](https://developer.paypal.com/dashboard/applications)
+1. **PayPal Developer Account** at
+   [developer.paypal.com](https://developer.paypal.com)
+2. Create a **REST API App** in the
+   [Dashboard](https://developer.paypal.com/dashboard/applications)
 3. Get your **Client ID** and **Client Secret**
 4. Use **Sandbox** credentials for testing, **Live** for production
 
@@ -163,7 +165,8 @@ Send payments to multiple recipients.
 
 **Parameters:**
 
-- `recipients` (string, required) — JSON array of `{"email":"...","amount":"...","note":"..."}`
+- `recipients` (string, required) — JSON array of
+  `{"email":"...","amount":"...","note":"..."}`
 - `email_subject` (string, optional)
 - `email_message` (string, optional)
 
@@ -186,7 +189,8 @@ Create a catalog product.
 
 - `name` (string, required)
 - `description` (string, optional)
-- `type` (string, optional, default: `DIGITAL`) — `PHYSICAL`, `DIGITAL`, or `SERVICE`
+- `type` (string, optional, default: `DIGITAL`) — `PHYSICAL`, `DIGITAL`, or
+  `SERVICE`
 - `category` (string, optional) — e.g., `SOFTWARE`
 
 ### Subscriptions

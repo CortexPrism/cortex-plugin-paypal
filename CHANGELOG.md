@@ -2,8 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project
-adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
@@ -16,10 +17,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Initial release of cortex-plugin-paypal
-- **Orders** (4 tools): `paypal_create_order`, `paypal_capture_order`, `paypal_show_order`,
-  `paypal_refund_capture`
-- **Invoices** (3 tools): `paypal_list_invoices`, `paypal_create_invoice`, `paypal_show_invoice`
-- **Payouts** (1 tool): `paypal_create_payout` (batch payments to multiple recipients)
+- **Orders** (4 tools): `paypal_create_order`, `paypal_capture_order`,
+  `paypal_show_order`, `paypal_refund_capture`
+- **Invoices** (3 tools): `paypal_list_invoices`, `paypal_create_invoice`,
+  `paypal_show_invoice`
+- **Payouts** (1 tool): `paypal_create_payout` (batch payments to multiple
+  recipients)
 - **Products** (2 tools): `paypal_list_products`, `paypal_create_product`
 - **Subscriptions** (2 tools): `paypal_list_plans`, `paypal_create_subscription`
 - OAuth 2.0 authentication via `auth.ts` with automatic token refresh
