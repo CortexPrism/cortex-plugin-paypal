@@ -1,0 +1,326 @@
+{
+  "name": "cortex-plugin-paypal",
+  "version": "1.0.0",
+  "description": "PayPal payments, invoicing, payouts, products, and subscriptions via the PayPal REST API",
+  "kind": "esm",
+  "entryPoint": "mod.ts",
+  "runtime": "deno",
+  "author": "CortexPrism Contributors",
+  "license": "MIT",
+  "repository": "https://github.com/CortexPrism/cortex-plugin-paypal",
+  "homepage": "https://github.com/CortexPrism/cortex-plugin-paypal",
+  "capabilities": [
+    "tools",
+    "network:fetch"
+  ],
+  "tools": [
+    {
+      "name": "paypal_create_order",
+      "description": "Create a PayPal order for a purchase",
+      "params": [
+        {
+          "name": "amount",
+          "type": "string",
+          "description": "Order total (e.g., '25.99')",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "description": "Currency code (e.g., USD, EUR, GBP)",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Order description",
+          "required": false
+        },
+        {
+          "name": "intent",
+          "type": "string",
+          "description": "CAPTURE or AUTHORIZE (default: CAPTURE)",
+          "required": false
+        },
+        {
+          "name": "reference",
+          "type": "string",
+          "description": "Merchant-provided invoice/order ID",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "paypal_capture_order",
+      "description": "Capture payment for an approved PayPal order",
+      "params": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "description": "PayPal order ID to capture",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "paypal_show_order",
+      "description": "Get details of a PayPal order",
+      "params": [
+        { "name": "order_id", "type": "string", "description": "PayPal order ID", "required": true }
+      ]
+    },
+    {
+      "name": "paypal_refund_capture",
+      "description": "Refund a captured payment",
+      "params": [
+        {
+          "name": "capture_id",
+          "type": "string",
+          "description": "PayPal capture ID to refund",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "string",
+          "description": "Partial refund amount (defaults to full refund)",
+          "required": false
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "description": "Currency code (default: USD)",
+          "required": false
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "description": "Refund note to the buyer",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "paypal_list_invoices",
+      "description": "List PayPal invoices with optional status filter",
+      "params": [
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Filter: DRAFT, SENT, PAID, etc.",
+          "required": false
+        },
+        {
+          "name": "page_size",
+          "type": "number",
+          "description": "Results per page (1-100)",
+          "required": false
+        },
+        { "name": "page", "type": "number", "description": "Page number", "required": false }
+      ]
+    },
+    {
+      "name": "paypal_create_invoice",
+      "description": "Create and optionally send a PayPal invoice",
+      "params": [
+        {
+          "name": "recipient_email",
+          "type": "string",
+          "description": "Recipient email address",
+          "required": true
+        },
+        {
+          "name": "recipient_name",
+          "type": "string",
+          "description": "Recipient full name",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "string",
+          "description": "Invoice total (e.g., '99.99')",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "description": "Currency code (default: USD)",
+          "required": false
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "description": "Note to the recipient",
+          "required": false
+        },
+        {
+          "name": "send",
+          "type": "boolean",
+          "description": "Send invoice immediately (default: true)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "paypal_show_invoice",
+      "description": "Get details of a PayPal invoice by ID",
+      "params": [
+        {
+          "name": "invoice_id",
+          "type": "string",
+          "description": "PayPal invoice ID",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "paypal_create_payout",
+      "description": "Send a PayPal payout to one or more recipients",
+      "params": [
+        {
+          "name": "recipients",
+          "type": "string",
+          "description": "JSON array of recipients: [{\"email\":\"...\",\"amount\":\"...\",\"note\":\"...\"}]",
+          "required": true
+        },
+        {
+          "name": "email_subject",
+          "type": "string",
+          "description": "Subject of the payout notification email",
+          "required": false
+        },
+        {
+          "name": "email_message",
+          "type": "string",
+          "description": "Message in the payout notification email",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "paypal_list_products",
+      "description": "List PayPal catalog products",
+      "params": [
+        {
+          "name": "page_size",
+          "type": "number",
+          "description": "Results per page (1-100)",
+          "required": false
+        },
+        { "name": "page", "type": "number", "description": "Page number", "required": false }
+      ]
+    },
+    {
+      "name": "paypal_create_product",
+      "description": "Create a PayPal catalog product",
+      "params": [
+        { "name": "name", "type": "string", "description": "Product name", "required": true },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Product description",
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "description": "PHYSICAL, DIGITAL, or SERVICE (default: DIGITAL)",
+          "required": false
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "description": "Product category (e.g., SOFTWARE)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "paypal_list_plans",
+      "description": "List PayPal billing plans (subscription plans)",
+      "params": [
+        {
+          "name": "page_size",
+          "type": "number",
+          "description": "Results per page (1-100)",
+          "required": false
+        },
+        { "name": "page", "type": "number", "description": "Page number", "required": false },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Filter: ACTIVE, INACTIVE, CREATED",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "paypal_create_subscription",
+      "description": "Create a PayPal subscription for a plan",
+      "params": [
+        {
+          "name": "plan_id",
+          "type": "string",
+          "description": "PayPal billing plan ID",
+          "required": true
+        },
+        {
+          "name": "subscriber_email",
+          "type": "string",
+          "description": "Subscriber email address",
+          "required": false
+        },
+        {
+          "name": "subscriber_name",
+          "type": "string",
+          "description": "Subscriber full name",
+          "required": false
+        },
+        {
+          "name": "quantity",
+          "type": "number",
+          "description": "Quantity (default: 1)",
+          "required": false
+        },
+        {
+          "name": "return_url",
+          "type": "string",
+          "description": "URL after approval",
+          "required": false
+        },
+        {
+          "name": "cancel_url",
+          "type": "string",
+          "description": "URL on cancellation",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "config": {
+    "properties": {
+      "paypalClientId": {
+        "type": "string",
+        "description": "PayPal REST API Client ID from developer dashboard"
+      },
+      "paypalClientSecret": {
+        "type": "string",
+        "description": "PayPal REST API Client Secret"
+      },
+      "paypalEnvironment": {
+        "type": "string",
+        "description": "Environment: 'sandbox' for testing, 'live' for production",
+        "default": "sandbox"
+      }
+    }
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "cortex": ">=1.0.0"
+  },
+  "aiDisclosure": {
+    "tools": ["copilot"],
+    "generatedFiles": ["mod.ts", "auth.ts", "services/*.ts", "README.md"],
+    "humanReviewed": true,
+    "statement": "All AI-generated code was reviewed, tested, and verified for correctness and security."
+  }
+}
