@@ -66,7 +66,12 @@
       "name": "paypal_show_order",
       "description": "Get details of a PayPal order",
       "params": [
-        { "name": "order_id", "type": "string", "description": "PayPal order ID", "required": true }
+        {
+          "name": "order_id",
+          "type": "string",
+          "description": "PayPal order ID",
+          "required": true
+        }
       ]
     },
     {
@@ -115,7 +120,12 @@
           "description": "Results per page (1-100)",
           "required": false
         },
-        { "name": "page", "type": "number", "description": "Page number", "required": false }
+        {
+          "name": "page",
+          "type": "number",
+          "description": "Page number",
+          "required": false
+        }
       ]
     },
     {
@@ -206,14 +216,24 @@
           "description": "Results per page (1-100)",
           "required": false
         },
-        { "name": "page", "type": "number", "description": "Page number", "required": false }
+        {
+          "name": "page",
+          "type": "number",
+          "description": "Page number",
+          "required": false
+        }
       ]
     },
     {
       "name": "paypal_create_product",
       "description": "Create a PayPal catalog product",
       "params": [
-        { "name": "name", "type": "string", "description": "Product name", "required": true },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Product name",
+          "required": true
+        },
         {
           "name": "description",
           "type": "string",
@@ -244,7 +264,12 @@
           "description": "Results per page (1-100)",
           "required": false
         },
-        { "name": "page", "type": "number", "description": "Page number", "required": false },
+        {
+          "name": "page",
+          "type": "number",
+          "description": "Page number",
+          "required": false
+        },
         {
           "name": "status",
           "type": "string",

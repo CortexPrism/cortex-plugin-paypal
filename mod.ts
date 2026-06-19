@@ -29,24 +29,26 @@
  * ```
  */
 
-import type { PluginContext, Tool } from 'cortex/plugins';
-import { ordersTools } from './services/orders.ts';
-import { invoicesTools } from './services/invoices.ts';
-import { payoutsTools } from './services/payouts.ts';
-import { productsTools } from './services/products.ts';
-import { subscriptionsTools } from './services/subscriptions.ts';
+import type { PluginContext, Tool } from "cortex/plugins";
+import { ordersTools } from "./services/orders.ts";
+import { invoicesTools } from "./services/invoices.ts";
+import { payoutsTools } from "./services/payouts.ts";
+import { productsTools } from "./services/products.ts";
+import { subscriptionsTools } from "./services/subscriptions.ts";
 
 export async function onLoad(ctx: PluginContext): Promise<void> {
-  await ctx.logger.info('[cortex-plugin-paypal] Loading PayPal plugin');
+  await ctx.logger.info("[cortex-plugin-paypal] Loading PayPal plugin");
 
-  const paypal = await ctx.config.get<Record<string, unknown>>('paypal') || {};
+  const paypal = await ctx.config.get<Record<string, unknown>>("paypal") || {};
   if (paypal.paypalClientId && paypal.paypalClientSecret) {
     await ctx.logger.info(
-      `[cortex-plugin-paypal] Configured for ${paypal.paypalEnvironment || 'sandbox'} environment`,
+      `[cortex-plugin-paypal] Configured for ${
+        paypal.paypalEnvironment || "sandbox"
+      } environment`,
     );
   } else {
     await ctx.logger.warn(
-      '[cortex-plugin-paypal] Not configured. Set paypalClientId and paypalClientSecret.',
+      "[cortex-plugin-paypal] Not configured. Set paypalClientId and paypalClientSecret.",
     );
   }
 
