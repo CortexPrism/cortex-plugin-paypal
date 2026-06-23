@@ -1,6 +1,6 @@
 {
   "name": "cortex-plugin-paypal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PayPal payments, invoicing, payouts, products, and subscriptions via the PayPal REST API",
   "kind": "esm",
   "entryPoint": "mod.ts",
@@ -334,17 +334,24 @@
       "paypalEnvironment": {
         "type": "string",
         "description": "Environment: 'sandbox' for testing, 'live' for production",
-        "default": "sandbox"
+        "defaultValue": "sandbox"
       }
     }
   },
   "dependencies": {},
   "peerDependencies": {
-    "cortex": ">=1.0.0"
+    "cortex": ">=0.51.0"
   },
   "aiDisclosure": {
-    "tools": ["copilot"],
-    "generatedFiles": ["mod.ts", "auth.ts", "services/*.ts", "README.md"],
+    "tools": [
+      "copilot"
+    ],
+    "generatedFiles": [
+      "mod.ts",
+      "auth.ts",
+      "services/*.ts",
+      "README.md"
+    ],
     "humanReviewed": true,
     "statement": "All AI-generated code was reviewed, tested, and verified for correctness and security."
   }
